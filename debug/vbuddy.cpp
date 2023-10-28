@@ -685,6 +685,7 @@ char serialib::readChar(char *pByte,unsigned int timeOut_ms)
   */
 int serialib::readStringNoTimeOut(char *receivedString,char finalChar,unsigned int maxNbBytes)
 {
+    printf("_readstring\n");
     // Number of characters read
     unsigned int    NbBytes=0;
     // Returned value from Read
@@ -695,7 +696,9 @@ int serialib::readStringNoTimeOut(char *receivedString,char finalChar,unsigned i
     {
         // Read a character with the restant time
         charRead=readChar(&receivedString[NbBytes]);
-
+        printf("charRead: %i\n", charRead);
+        printf("receivedString: %s\n", receivedString);
+        printf("finalChar: %c\n", finalChar);
         // Check a character has been read
         if (charRead==1)
         {
@@ -705,6 +708,7 @@ int serialib::readStringNoTimeOut(char *receivedString,char finalChar,unsigned i
                 // This is the final char, add zero (end of string)
                 receivedString  [++NbBytes]=0;
                 // Return the number of bytes read
+                printf("readstring_\n");
                 return NbBytes;
             }
 
@@ -1007,16 +1011,24 @@ char vbdGetkey() {
 serialib serial;   // this is global for now
 
 void ack( ) {
+    printf("_inack\n");
   char receivedString[80];
   char finalChar = '\n';
   do {
-      serial.readString(receivedString, finalChar, 80, 0);
-    } while (receivedString[0]!='$');
+      printf("do\n");
+      std::cout<< serial.readString(receivedString, finalChar, 80, 0)<< std::endl;
+      printf("%s\n", receivedString);
+    } while (receivedString[0]!='$', printf("_inwhile\n"));
 }
 
 void vbdClear() {
 char msg[80];    // max 80 characters
-    std::sprintf(msg, "$C\n"); serial.writeString(msg); ack();
+    std::sprintf(msg, "$C\n");
+    printf("_serial write\n");
+    serial.writeString(msg);
+    printf("String: %s\n", msg);
+    printf("serial write_\n");
+    ack();
 }
 
 int vbdOpen() {
@@ -1039,7 +1051,9 @@ int vbdOpen() {
   else {
     printf ("\n ** Connected to Vbuddy via: %s\n", port_name);
     // clear Vbuddy screen
+    printf ("_flush\n");
     serial.flushReceiver();
+    printf ("flush_\n");
     vbdClear();
   }
   return(errorOpening);
@@ -1072,11 +1086,18 @@ void vbdPlot(int y, int min, int max) {
 }
 
 void vbdHeader(const char* header) {
+  std::cout << "_vbdHeader" <<std::endl;
   char msg[80];    // max 80 characters
+  std::cout << "_spritf" <<std::endl; 
   std::sprintf(msg, "$T,%s\n", header);
+  std::cout << "spritf_" <<std::endl;
+  std::cout << "_serialw" <<std::endl; 
   serial.writeString(msg);
+  std::cout << "serialw_" <<std::endl;
+  std::cout << "_ack" <<std::endl; 
   ack();
-
+  std::cout << "ack_" <<std::endl;
+  std::cout << "vbdHeader_" <<std::endl;
 }
 
 void vbdCycle(int cycle) {
