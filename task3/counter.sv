@@ -1,16 +1,16 @@
 module counter #(
-    parameter WIDTH = 8
+  parameter WIDTH = 8
 )(
-    //interface signals
-    input logic clk,    //clock
-    input logic rst,    //reset
-    input logic en,     // counter enable
-    output logic [WIDTH - 1 : 0] count  //count output
+  // interface signals
+  input  logic             clk,      // clock 
+  input  logic             rst,      // reset 
+  input  logic             ld,       // load counter from data
+  input  logic [WIDTH-1:0] v,        // value to preload
+  output logic [WIDTH-1:0] count     // count output
 );
-    
-always_ff @(posedge clk)
-    if (rst) count <= {WIDTH{1'b0}};
-    else if (!en) count <= count + {(WIDTH){1'b1}};     // count down if en is 0
-    else count <= count + {{(WIDTH - 1){1'b0}},en};     // add 0,0,0,...,0,en
+
+always_ff @ (posedge clk)
+  if (rst) count <= {WIDTH{1'b0}};
+  else count <= ld ? count + v : count + {{WIDTH-1{1'b0}},1'b0};
 
 endmodule

@@ -30,7 +30,9 @@ int main(int argc, char **argv, char **env){
     // initialize simulation inputs
     top->clk = 1;
     top->rst = 1;
-    top->en = 0;
+    top->ld = 0;
+    top->v = 50;
+    vbdSetMode(1);
 
     int stop_cycles = 3;
 
@@ -55,7 +57,7 @@ int main(int argc, char **argv, char **env){
         */
         //end of buddy output sectiPon
         
-        top->en = vbdFlag();
+        top->ld = vbdFlag();
         std::cout << vbdFlag() << std::endl;
         std::cout << int(top->count) << std::endl;
         top->rst = 0;

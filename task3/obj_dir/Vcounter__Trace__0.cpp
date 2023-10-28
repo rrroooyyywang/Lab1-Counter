@@ -25,8 +25,9 @@ void Vcounter___024root__trace_chg_sub_0(Vcounter___024root* vlSelf, VerilatedVc
     // Body
     bufp->chgBit(oldp+0,(vlSelf->clk));
     bufp->chgBit(oldp+1,(vlSelf->rst));
-    bufp->chgBit(oldp+2,(vlSelf->en));
-    bufp->chgCData(oldp+3,(vlSelf->count),8);
+    bufp->chgBit(oldp+2,(vlSelf->ld));
+    bufp->chgCData(oldp+3,(vlSelf->v),8);
+    bufp->chgCData(oldp+4,(vlSelf->count),8);
 }
 
 void Vcounter___024root__trace_cleanup(void* voidSelf, VerilatedVcd* /*unused*/) {
@@ -35,9 +36,6 @@ void Vcounter___024root__trace_cleanup(void* voidSelf, VerilatedVcd* /*unused*/)
     Vcounter___024root* const __restrict vlSelf VL_ATTR_UNUSED = static_cast<Vcounter___024root*>(voidSelf);
     Vcounter__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VlUnpacked<CData/*0:0*/, 1> __Vm_traceActivity;
-    for (int __Vi0 = 0; __Vi0 < 1; ++__Vi0) {
-        __Vm_traceActivity[__Vi0] = 0;
-    }
     // Body
     vlSymsp->__Vm_activity = false;
     __Vm_traceActivity[0U] = 0U;
